@@ -1,17 +1,21 @@
-﻿<Window x:Class="Smash_Helper.MainWindow"
+﻿<Window x:Class="FG_Stream_Helper.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Smash_Helper"
+        xmlns:local="clr-namespace:FG_Stream_Helper"
         mc:Ignorable="d"
-        Title="Smash Helper" Height="300" Width="450">
+        Title="FG Stream Helper"
+        Height="300" Width="600"
+        Background="#FF292929" Foreground="White"
+        >
+
 
     <Window.Resources>
         <DataTemplate x:Key="cmbTemplate">
-            <WrapPanel Margin="0 5 0 5" Height="80">
-                <Image Width="50" Height="50" Stretch="Fill" Source="{Binding Photo}" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,15,0"/>
-                <Label Content="{Binding Name}" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="20"/>
+            <WrapPanel Margin="0 5 0 5" Height="64">
+                <Image Width="64" Height="64" Stretch="UniformToFill"  Source="{Binding Photo}" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,15,0" OpacityMask="{x:Null}"/>
+                <TextBlock Text="{Binding Name}" TextWrapping="Wrap" VerticalAlignment="Bottom" HorizontalAlignment="Center" FontSize="15" />
             </WrapPanel>
         </DataTemplate>
     </Window.Resources>
@@ -19,8 +23,7 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="20"/>
-            <ColumnDefinition Width="auto"/>
-            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="20"/>
         </Grid.ColumnDefinitions>
@@ -52,7 +55,7 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="20"/>
         </Grid.RowDefinitions>
-        
+
         <!-- 1 Names Label -->
         <TextBlock Grid.Column="1" Grid.Row="1" Text="Left Player Name"/>
         <TextBlock Grid.Column="2" Grid.Row="1" Text="Right Player Name"/>
@@ -60,29 +63,32 @@
         <!-- 2 Names Input -->
         <TextBox Name="leftNameTextBox" Grid.Column="1" HorizontalAlignment="Left" Grid.Row="2" TextWrapping="Wrap" Text="left name" VerticalAlignment="Top" Width="200" />
         <TextBox Name="rightNameTextBox" Grid.Column="2" HorizontalAlignment="Left" Grid.Row="2" TextWrapping="Wrap" Text="right name" VerticalAlignment="Top" Width="200" />
-        
+
         <!-- 3 Scores w/ +- buttons -->
         <TextBlock Name="leftScore" Grid.Column="1" Grid.Row="3" Text="0" Margin="45,0,0,0" VerticalAlignment="Bottom"/>
         <Button x:Name="leftScoreUp" Content="+" Grid.Column="1" Grid.Row="3" HorizontalAlignment="Left" Width="20" Height="20" VerticalAlignment="Bottom" Click="leftScoreUp_Click"/>
         <Button x:Name="leftScoreDown" Content="-" Grid.Column="1" Grid.Row="3" HorizontalAlignment="Left" Margin="20,0,0,0" Width="20" Click="leftScoreDown_Click"/>
 
         <TextBlock Name="rightScore" Grid.Column="2" Grid.Row="3" Text="0" Margin="45,0,0,0" VerticalAlignment="Bottom"/>
-        <Button Content="+" Grid.Column="2" Grid.Row="3" HorizontalAlignment="Left" Width="20" Height="20" VerticalAlignment="Bottom"/>
-        <Button Content="-" Grid.Column="2" Grid.Row="3" HorizontalAlignment="Left" Margin="20,0,0,0" Width="20"/>
+        <Button x:Name="rightScoreUp"  Content="+" Grid.Column="2" Grid.Row="3" HorizontalAlignment="Left" Width="20" Height="20" VerticalAlignment="Bottom" Click="rightScoreUp_Click"/>
+        <Button x:Name="rightScoreDown" Content="-" Grid.Column="2" Grid.Row="3" HorizontalAlignment="Left" Margin="20,0,0,0" Width="20" Click="rightScoreDown_Click"/>
 
         <!-- 4 Picture Dropdowns -->
-        <ComboBox x:Name="leftImage" Grid.Column="1" Grid.Row="4" ItemTemplate="{StaticResource cmbTemplate}" Margin="0 5 0 5" Height="80"/>
-        <ComboBox x:Name="rightImage" Grid.Column="2" Grid.Row="4" ItemTemplate="{StaticResource cmbTemplate}" Margin="0 5 0 5" Height="80"/>
+        <ComboBox x:Name="leftImage" Grid.Column="1" Grid.Row="4" ItemTemplate="{StaticResource cmbTemplate}" Margin="0 5 0 5"/>
+        <ComboBox x:Name="rightImage" Grid.Column="2" Grid.Row="4" ItemTemplate="{StaticResource cmbTemplate}" Margin="0 5 0 5"/>
 
         <!-- 5 Bracket Label -->
         <TextBlock Grid.Column="1" Grid.Row="5" Text="Bracket Text" Grid.ColumnSpan="2" HorizontalAlignment="Center"/>
-        
+
         <!-- 6 Bracket Input -->
         <TextBox Name="bracketTextBox" Grid.Column="1" Grid.Row="6" TextWrapping="Wrap" Text="bracket" Grid.ColumnSpan="2"/>
 
         <!-- 7 Submit Button -->
         <Button x:Name="Submit" Content="Submit" Grid.Column="1"  Margin="10,0,10,0" Grid.Row="7" Click="Submit_Click"/>
         <Button x:Name="Reset" Content="Reset" Grid.Column="2"  Margin="10,0,10,0" Grid.Row="7" Click="Reset_Click"/>
-        
+
+        <!-- 9 Bottom Row -->
+        <TextBlock Grid.Row="9" Grid.ColumnSpan="3" Text="Made by @genaralskar" VerticalAlignment="Bottom" HorizontalAlignment="Left"/>
+
     </Grid>
 </Window>

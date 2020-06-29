@@ -15,7 +15,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Smash_Helper
+namespace FG_Stream_Helper
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -48,8 +48,9 @@ namespace Smash_Helper
             int i = 0;
             foreach (var path in Images)
             {
-                Console.WriteLine($"Path: {"images/"}{path.FullName}");
-                ImageList.Add(new ImageInfo { ID = i, Photo = path.FullName, Name = path.Name, fileInfo = path });
+                //Console.WriteLine($"Path: {"images/"}{path.FullName}");
+                string newName = path.Name.Split('.')[0];
+                ImageList.Add(new ImageInfo { ID = i, Photo = path.FullName, Name = newName, fileInfo = path });
                 i++;
             }
 
@@ -83,6 +84,22 @@ namespace Smash_Helper
             leftScore.Text = score.ToString();
         }
 
+        private void rightScoreUp_Click(object sender, RoutedEventArgs e)
+        {
+            int score = int.Parse(rightScore.Text);
+            score++;
+            rightScore.Text = score.ToString();
+        }
+
+        private void rightScoreDown_Click(object sender, RoutedEventArgs e)
+        {
+            int score = int.Parse(rightScore.Text);
+            score--;
+            if (score < 0)
+                score = 0;
+            rightScore.Text = score.ToString();
+        }
+
         private void Submit_Click(object sender, RoutedEventArgs e)
         {
             //check if out folder exists
@@ -109,8 +126,8 @@ namespace Smash_Helper
             
             File.Copy(fi.FullName, $"{Directory.GetCurrentDirectory()}\\out\\leftImage{fi.Extension}", true);
 
-            Console.WriteLine($"filePath: {fi.FullName}");
-            Console.WriteLine($"fileOutput: {$"{Directory.GetCurrentDirectory()}\\out\\leftImage{fi.Extension}"}");
+            //Console.WriteLine($"filePath: {fi.FullName}");
+            //Console.WriteLine($"fileOutput: {$"{Directory.GetCurrentDirectory()}\\out\\leftImage{fi.Extension}"}");
 
             //right image
             int itemIndex2 = rightImage.SelectedIndex;
@@ -134,5 +151,7 @@ namespace Smash_Helper
             leftImage.SelectedIndex = 0;
             rightImage.SelectedIndex = 0;
         }
+
+
     }
 }
