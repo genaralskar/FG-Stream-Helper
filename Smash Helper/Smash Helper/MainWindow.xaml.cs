@@ -118,22 +118,20 @@ namespace FG_Stream_Helper
             //right score
             File.WriteAllText("out/rightScore.txt", rightScore.Text);
 
-            //only export images if there is something to copy
-            if(CharacterImageList.Count != 0)
+            //only export images if there is something to copy and the option is checked
+            if(CharacterImageList.Count != 0  && exportImages.IsChecked.GetValueOrDefault())
             {
                 //left image
                 int itemIndex = leftImage.SelectedIndex;
                 FileInfo fi = CharacterImageList[itemIndex].fileInfo;
-
-                File.Copy(fi.FullName, $"out/leftimage{fi.Extension}", true);
-
-                //Console.WriteLine($"filePath: {fi.FullName}");
-                //Console.WriteLine($"fileOutput: {$"{Directory.GetCurrentDirectory()}\\out\\leftImage{fi.Extension}"}");
+                string path = fi.FullName;
+                //errorsTextBlock.Text = itemIndex.ToString() + " " + path;
+                File.Copy(path, $"out/leftimage{fi.Extension}", true);
 
                 //right image
-                int itemIndex2 = rightImage.SelectedIndex;
-                FileInfo fi2 = CharacterImageList[itemIndex2].fileInfo;
-                File.Copy(fi2.FullName, $"out/rightImage{fi2.Extension}", true);
+                itemIndex = rightImage.SelectedIndex;
+                fi = CharacterImageList[itemIndex].fileInfo;
+                File.Copy(fi.FullName, $"out/rightImage{fi.Extension}", true);
             }
             
             //bracket name
@@ -148,15 +146,30 @@ namespace FG_Stream_Helper
             leftScore.Text = "0";
             rightScore.Text = "0";
 
-            bracketTextBox.Text = "bracket";
-
             leftImage.SelectedIndex = 0;
             rightImage.SelectedIndex = 0;
+
+            bracketTextBox.Text = "bracket";
+
+            apiText.Text = "";
+            errorsTextBlock.Text = "";
         }
 
         private void getMatch_Click(object sender, RoutedEventArgs e)
         {
             _ = GetAPIInfo(apiText.Text);
+        }
+
+        private void exportImages_Checked(object sender, RoutedEventArgs e)
+        {
+            leftImage.Visibility = Visibility.Visible;
+            rightImage.Visibility = Visibility.Visible;
+        }
+
+        private void exportImages_Unchecked(object sender, RoutedEventArgs e)
+        {
+            leftImage.Visibility = Visibility.Collapsed;
+            rightImage.Visibility = Visibility.Collapsed;
         }
 
         #region API Stuff
@@ -232,6 +245,7 @@ namespace FG_Stream_Helper
 
         #endregion
 
+        
     }
 }
 
