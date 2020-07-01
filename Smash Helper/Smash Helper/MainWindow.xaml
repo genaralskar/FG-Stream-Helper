@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:FG_Stream_Helper"
         mc:Ignorable="d"
         Title="FG Stream Helper"
-        Height="300" Width="600"
+        Height="380" Width="600"
         Background="#FF292929" Foreground="White"
         >
 
@@ -49,16 +49,25 @@
             <!-- 6 Bracket Input -->
             <RowDefinition Height="auto"/>
 
-            <!-- 7 Submit Button -->
+            <!-- 7 Smash GG Link Text -->
             <RowDefinition Height="auto"/>
 
+            <!-- 8 API Get -->
+            <RowDefinition Height="auto"/>
+            
+            <!-- 9 API Errors -->
+            <RowDefinition Height="auto"/>
+
+            <!-- 10 Submit Button -->
+            <RowDefinition Height="auto"/>
+            
             <RowDefinition Height="*"/>
             <RowDefinition Height="20"/>
         </Grid.RowDefinitions>
 
         <!-- 1 Names Label -->
-        <TextBlock Grid.Column="1" Grid.Row="1" Text="Left Player Name"/>
-        <TextBlock Grid.Column="2" Grid.Row="1" Text="Right Player Name"/>
+        <TextBlock Grid.Column="1" Grid.Row="1" Text="Left Player Name" ToolTip="The name for the player on the left" />
+        <TextBlock Grid.Column="2" Grid.Row="1" Text="Right Player Name" ToolTip="The name for the player on the right"/>
 
         <!-- 2 Names Input -->
         <TextBox Name="leftNameTextBox" Grid.Column="1" HorizontalAlignment="Left" Grid.Row="2" TextWrapping="Wrap" Text="left name" VerticalAlignment="Top" Width="200" />
@@ -66,29 +75,39 @@
 
         <!-- 3 Scores w/ +- buttons -->
         <TextBlock Name="leftScore" Grid.Column="1" Grid.Row="3" Text="0" Margin="45,0,0,0" VerticalAlignment="Bottom"/>
-        <Button x:Name="leftScoreUp" Content="+" Grid.Column="1" Grid.Row="3" HorizontalAlignment="Left" Width="20" Height="20" VerticalAlignment="Bottom" Click="leftScoreUp_Click"/>
+        <Button x:Name="leftScoreUp" Content="+" Grid.Column="1" Grid.Row="3" HorizontalAlignment="Left" Width="20" Height="20" VerticalAlignment="Bottom" ToolTip="Left player's current score" Click="leftScoreUp_Click"/>
         <Button x:Name="leftScoreDown" Content="-" Grid.Column="1" Grid.Row="3" HorizontalAlignment="Left" Margin="20,0,0,0" Width="20" Click="leftScoreDown_Click"/>
 
         <TextBlock Name="rightScore" Grid.Column="2" Grid.Row="3" Text="0" Margin="45,0,0,0" VerticalAlignment="Bottom"/>
-        <Button x:Name="rightScoreUp"  Content="+" Grid.Column="2" Grid.Row="3" HorizontalAlignment="Left" Width="20" Height="20" VerticalAlignment="Bottom" Click="rightScoreUp_Click"/>
+        <Button x:Name="rightScoreUp"  Content="+" Grid.Column="2" Grid.Row="3" HorizontalAlignment="Left" Width="20" Height="20" VerticalAlignment="Bottom" ToolTip="Right player's current score" Click="rightScoreUp_Click"/>
         <Button x:Name="rightScoreDown" Content="-" Grid.Column="2" Grid.Row="3" HorizontalAlignment="Left" Margin="20,0,0,0" Width="20" Click="rightScoreDown_Click"/>
 
         <!-- 4 Picture Dropdowns -->
-        <ComboBox x:Name="leftImage" Grid.Column="1" Grid.Row="4" ItemTemplate="{StaticResource cmbTemplate}" Margin="0 5 0 5"/>
-        <ComboBox x:Name="rightImage" Grid.Column="2" Grid.Row="4" ItemTemplate="{StaticResource cmbTemplate}" Margin="0 5 0 5"/>
+        <ComboBox x:Name="leftImage" Grid.Column="1" Grid.Row="4" ItemTemplate="{StaticResource cmbTemplate}" Margin="0 10 0 5" Height="80" IsTextSearchEnabled="True" TextSearch.TextPath="Name" IsTextSearchCaseSensitive="False"/>
+        <ComboBox x:Name="rightImage" Grid.Column="2" Grid.Row="4" ItemTemplate="{StaticResource cmbTemplate}" Margin="0 10 0 5" Height="80" IsTextSearchEnabled="True" TextSearch.TextPath="Name" IsTextSearchCaseSensitive="False"/>
 
         <!-- 5 Bracket Label -->
-        <TextBlock Grid.Column="1" Grid.Row="5" Text="Bracket Text" Grid.ColumnSpan="2" HorizontalAlignment="Center"/>
+        <TextBlock Grid.Column="1" Grid.Row="5" Text="Bracket Text" Grid.ColumnSpan="2" HorizontalAlignment="Center" Margin="0 10 0 0" ToolTip="The name for the current set, like Winners Finals"/>
 
         <!-- 6 Bracket Input -->
         <TextBox Name="bracketTextBox" Grid.Column="1" Grid.Row="6" TextWrapping="Wrap" Text="bracket" Grid.ColumnSpan="2"/>
 
-        <!-- 7 Submit Button -->
-        <Button x:Name="Submit" Content="Submit" Grid.Column="1"  Margin="10,0,10,0" Grid.Row="7" Click="Submit_Click"/>
-        <Button x:Name="Reset" Content="Reset" Grid.Column="2"  Margin="10,0,10,0" Grid.Row="7" Click="Reset_Click"/>
+        <!-- 7 Smash GG Text -->
+        <TextBlock Grid.Column="1" Grid.Row="7" Text="smash.gg set link or set id " Margin="0,10,0,0" ToolTip="https://smash.gg/tournament/tiny-fists-2/event/ultimate-singles/set/{id} or {id}"/>
 
-        <!-- 9 Bottom Row -->
-        <TextBlock Grid.Row="9" Grid.ColumnSpan="3" Text="Made by @genaralskar" VerticalAlignment="Bottom" HorizontalAlignment="Left"/>
+        <!-- 8 API Get -->
+        <TextBox Name="apiText" Grid.Column="1" Grid.Row="8" Margin="0,0,10,0"/>
+        <Button x:Name="getMatch" Content="Get Match" Grid.Column="2" Grid.Row="8" Margin="10,0,0,0" Click="getMatch_Click"/>
+
+        <!-- 9 API Errors -->
+        <TextBlock Name="errorsTextBlock" Grid.Column="1" Grid.Row="9" Grid.ColumnSpan="2" Text="" Margin="0 0 0 0"/>
+        
+        <!-- 10 Submit Button -->
+        <Button x:Name="Submit" Content="Submit" Grid.Column="1"  Margin="10,20,20,0" Grid.Row="10" Click="Submit_Click" ToolTip="Export all current values to their respective files"/>
+        <Button x:Name="Reset" Content="Reset" Grid.Column="2"  Margin="200,20,10,0" Grid.Row="10" Click="Reset_Click" ToolTip="Reset all values to a default value"/>
+
+        <!-- 12 Bottom Row -->
+        <TextBlock Grid.Row="12" Grid.ColumnSpan="3" Text="Made by @genaralskar" VerticalAlignment="Bottom" HorizontalAlignment="Left" ToolTip="Twitter: @genaralskar, github: genaralskar"/>
 
     </Grid>
 </Window>

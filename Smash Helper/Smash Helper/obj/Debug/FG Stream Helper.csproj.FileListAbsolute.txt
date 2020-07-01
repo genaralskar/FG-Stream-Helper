@@ -12,3 +12,39 @@ E:\GIT\smashHelper\Smash Helper\Smash Helper\obj\Debug\FG Stream Helper.g.resour
 E:\GIT\smashHelper\Smash Helper\Smash Helper\obj\Debug\FG_Stream_Helper.Properties.Resources.resources
 E:\GIT\smashHelper\Smash Helper\Smash Helper\obj\Debug\FG Stream Helper.exe
 E:\GIT\smashHelper\Smash Helper\Smash Helper\obj\Debug\FG Stream Helper.pdb
+E:\GIT\smashHelper\Smash Helper\Smash Helper\obj\Debug\FG Stream Helper.csprojAssemblyReference.cache
+E:\GIT\smashHelper\Smash Helper\Smash Helper\bin\Debug\GraphQL-Parser.dll
+E:\GIT\smashHelper\Smash Helper\Smash Helper\bin\Debug\GraphQL.Client.Abstractions.dll
+E:\GIT\smashHelper\Smash Helper\Smash Helper\bin\Debug\GraphQL.Client.Abstractions.Websocket.dll
+E:\GIT\smashHelper\Smash Helper\Smash Helper\bin\Debug\GraphQL.Client.dll
+E:\GIT\smashHelper\Smash Helper\Smash Helper\bin\Debug\GraphQL.Client.Serializer.Newtonsoft.dll
+E:\GIT\smashHelper\Smash Helper\Smash Helper\bin\Debug\GraphQL.dll
+E:\GIT\smashHelper\Smash Helper\Smash Helper\bin\Debug\GraphQL.Primitives.dll
+E:\GIT\smashHelper\Smash Helper\Smash Helper\bin\Debug\Newtonsoft.Json.dll
+E:\GIT\smashHelper\Smash Helper\Smash Helper\bin\Debug\System.Buffers.dll
+E:\GIT\smashHelper\Smash Helper\Smash Helper\bin\Debug\System.Net.WebSockets.Client.Managed.dll
+E:\GIT\smashHelper\Smash Helper\Smash Helper\bin\Debug\System.Numerics.Vectors.dll
+E:\GIT\smashHelper\Smash Helper\Smash Helper\bin\Debug\System.Reactive.Core.dll
+E:\GIT\smashHelper\Smash Helper\Smash Helper\bin\Debug\System.Reactive.dll
+E:\GIT\smashHelper\Smash Helper\Smash Helper\bin\Debug\System.Reactive.Interfaces.dll
+E:\GIT\smashHelper\Smash Helper\Smash Helper\bin\Debug\System.Reactive.Linq.dll
+E:\GIT\smashHelper\Smash Helper\Smash Helper\bin\Debug\System.Runtime.CompilerServices.Unsafe.dll
+E:\GIT\smashHelper\Smash Helper\Smash Helper\bin\Debug\System.Threading.Tasks.Extensions.dll
+E:\GIT\smashHelper\Smash Helper\Smash Helper\bin\Debug\System.ValueTuple.dll
+E:\GIT\smashHelper\Smash Helper\Smash Helper\bin\Debug\GraphQL.Client.xml
+E:\GIT\smashHelper\Smash Helper\Smash Helper\bin\Debug\GraphQL.Client.Abstractions.xml
+E:\GIT\smashHelper\Smash Helper\Smash Helper\bin\Debug\GraphQL.Client.Abstractions.Websocket.xml
+E:\GIT\smashHelper\Smash Helper\Smash Helper\bin\Debug\GraphQL.Client.Serializer.Newtonsoft.xml
+E:\GIT\smashHelper\Smash Helper\Smash Helper\bin\Debug\GraphQL.Primitives.xml
+E:\GIT\smashHelper\Smash Helper\Smash Helper\bin\Debug\Newtonsoft.Json.xml
+E:\GIT\smashHelper\Smash Helper\Smash Helper\bin\Debug\System.Buffers.xml
+E:\GIT\smashHelper\Smash Helper\Smash Helper\bin\Debug\System.Net.WebSockets.Client.Managed.xml
+E:\GIT\smashHelper\Smash Helper\Smash Helper\bin\Debug\System.Numerics.Vectors.xml
+E:\GIT\smashHelper\Smash Helper\Smash Helper\bin\Debug\System.Reactive.xml
+E:\GIT\smashHelper\Smash Helper\Smash Helper\bin\Debug\System.Reactive.Core.xml
+E:\GIT\smashHelper\Smash Helper\Smash Helper\bin\Debug\System.Reactive.Interfaces.xml
+E:\GIT\smashHelper\Smash Helper\Smash Helper\bin\Debug\System.Reactive.Linq.xml
+E:\GIT\smashHelper\Smash Helper\Smash Helper\bin\Debug\System.Runtime.CompilerServices.Unsafe.xml
+E:\GIT\smashHelper\Smash Helper\Smash Helper\bin\Debug\System.Threading.Tasks.Extensions.xml
+E:\GIT\smashHelper\Smash Helper\Smash Helper\bin\Debug\System.ValueTuple.xml
+E:\GIT\smashHelper\Smash Helper\Smash Helper\obj\Debug\FG Stream Helper.csproj.CopyComplete

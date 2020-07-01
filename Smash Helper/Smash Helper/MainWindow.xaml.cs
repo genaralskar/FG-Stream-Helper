@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -22,45 +23,42 @@ namespace FG_Stream_Helper
     /// </summary>
     public partial class MainWindow : Window
     {
-
-        List<ImageInfo> ImageList = new List<ImageInfo>();
+        List<CharacterImageInfo> CharacterImageList = new List<CharacterImageInfo>();
 
         public MainWindow()
         {
             InitializeComponent();
-            //check if images folder exists
+
+            //check if images folder exists, create it if it doesn't
             if (!Directory.Exists("images/"))
             {
                 Directory.CreateDirectory("images/");
             }
 
-            PopulateList();
+            PopulateCharacterImages();
         }
 
-        private void PopulateList()
+        private void PopulateCharacterImages()
         {
             DirectoryInfo di = new DirectoryInfo("images/");
-             FileInfo[] Images = di.GetFiles("*.*");
+            FileInfo[] Images = di.GetFiles("*.*");
 
-
-            //List<string> imagePaths;
-            //imagePaths = Directory.GetFiles("Images/", "*.*", SearchOption.AllDirectories).ToList();
             int i = 0;
             foreach (var path in Images)
             {
                 //Console.WriteLine($"Path: {"images/"}{path.FullName}");
                 string newName = path.Name.Split('.')[0];
-                ImageList.Add(new ImageInfo { ID = i, Photo = path.FullName, Name = newName, fileInfo = path });
+                CharacterImageList.Add(new CharacterImageInfo { ID = i, Photo = path.FullName, Name = newName, fileInfo = path });
                 i++;
             }
 
-            leftImage.ItemsSource = ImageList;
+            leftImage.ItemsSource = CharacterImageList;
             leftImage.SelectedIndex = 0;
-            rightImage.ItemsSource = ImageList;
+            rightImage.ItemsSource = CharacterImageList;
             rightImage.SelectedIndex = 0;
         }
 
-        public class ImageInfo
+        public struct CharacterImageInfo
         {
             public int ID { get; set; }
             public string Photo { get; set; }
@@ -102,7 +100,7 @@ namespace FG_Stream_Helper
 
         private void Submit_Click(object sender, RoutedEventArgs e)
         {
-            //check if out folder exists
+            //check if out folder exists, create it if it doesn't
             if (!Directory.Exists("out/"))
             {
                 Directory.CreateDirectory("out/");
@@ -120,20 +118,24 @@ namespace FG_Stream_Helper
             //right score
             File.WriteAllText("out/rightScore.txt", rightScore.Text);
 
-            //left image
-            int itemIndex = leftImage.SelectedIndex;
-            FileInfo fi = ImageList[itemIndex].fileInfo;
+            //only export images if there is something to copy
+            if(CharacterImageList.Count != 0)
+            {
+                //left image
+                int itemIndex = leftImage.SelectedIndex;
+                FileInfo fi = CharacterImageList[itemIndex].fileInfo;
+
+                File.Copy(fi.FullName, $"out/leftimage{fi.Extension}", true);
+
+                //Console.WriteLine($"filePath: {fi.FullName}");
+                //Console.WriteLine($"fileOutput: {$"{Directory.GetCurrentDirectory()}\\out\\leftImage{fi.Extension}"}");
+
+                //right image
+                int itemIndex2 = rightImage.SelectedIndex;
+                FileInfo fi2 = CharacterImageList[itemIndex2].fileInfo;
+                File.Copy(fi2.FullName, $"out/rightImage{fi2.Extension}", true);
+            }
             
-            File.Copy(fi.FullName, $"{Directory.GetCurrentDirectory()}\\out\\leftImage{fi.Extension}", true);
-
-            //Console.WriteLine($"filePath: {fi.FullName}");
-            //Console.WriteLine($"fileOutput: {$"{Directory.GetCurrentDirectory()}\\out\\leftImage{fi.Extension}"}");
-
-            //right image
-            int itemIndex2 = rightImage.SelectedIndex;
-            FileInfo fi2 = ImageList[itemIndex2].fileInfo;
-            File.Copy(fi2.FullName, $"out/rightImage{fi2.Extension}", true);
-
             //bracket name
             File.WriteAllText("out/bracketName.txt", bracketTextBox.Text);
         }
@@ -152,6 +154,84 @@ namespace FG_Stream_Helper
             rightImage.SelectedIndex = 0;
         }
 
+        private void getMatch_Click(object sender, RoutedEventArgs e)
+        {
+            _ = GetAPIInfo(apiText.Text);
+        }
+
+        #region API Stuff
+
+        async Task GetAPIInfo(string id)
+        {
+            if (id == "") return;
+
+            string sId = id;
+
+            //check if id starts with h, indicating its a link. if so, only get the id part
+            if(sId[0] == 'h')
+            {
+                string[] split = id.Split('/');
+                sId = split[split.Length - 1];
+            }
+
+            //check the new id is actually a number
+            if (!int.TryParse(sId, out _))
+            {
+                errorsTextBlock.Text = "Invalid link or set id";
+                return;
+            }
+
+            try
+            {
+                SmashGGInfoModel info = await ApiHelper.GetSetInfo(sId);
+
+                SetInfo(info);      
+            }
+            catch (Exception e)
+            {
+                errorsTextBlock.Text = e.Message;
+            }
+            finally
+            {
+
+            }
+        }
+
+        private void SetInfo(SmashGGInfoModel info)
+        {
+            if(info.set == null)
+            {
+                errorsTextBlock.Text = "Could not find set with that id";
+                return;
+            }
+
+            errorsTextBlock.Text = "";
+
+
+            //bracket name
+            string bracketName = info.set.fullRoundText;
+
+            //player 1 name
+            string p1Name = info.set.slots[0].entrant.name;
+
+            //player 2 name
+            string p2Name = info.set.slots[1].entrant.name;
+
+            //player 1 score
+            float p1Score = info.set.slots[0].standing.stats.score.value;
+
+            //player 2 score
+            float p2Score = info.set.slots[1].standing.stats.score.value;
+
+            leftNameTextBox.Text = p1Name;
+            rightNameTextBox.Text = p2Name;
+            leftScore.Text = p1Score.ToString();
+            rightScore.Text = p2Score.ToString();
+            bracketTextBox.Text = bracketName;
+        }
+
+        #endregion
 
     }
 }
+
