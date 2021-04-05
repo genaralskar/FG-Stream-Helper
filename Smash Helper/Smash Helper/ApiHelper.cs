@@ -11,7 +11,7 @@ namespace FG_Stream_Helper
 {
     public static class ApiHelper
     {
-        static string auth = "c456df85c8166322cae64979a9c77353";
+        static string auth = "0";
 
         public static GraphQLHttpClient client = new GraphQLHttpClient("https://api.smash.gg/gql/alpha", new NewtonsoftJsonSerializer());
         public static float floo = 1f;
@@ -32,14 +32,6 @@ namespace FG_Stream_Helper
                                 fullRoundText
                                 slots {
                                     id
-                                    standing {
-                                        id
-                                        stats {
-                                            score {
-                                                value
-                                            }
-                                        }
-                                    }
                                     entrant {
                                         id
                                         name
@@ -62,6 +54,11 @@ namespace FG_Stream_Helper
             var client = new GraphQLHttpClient("https://api.smash.gg/gql/alpha", new NewtonsoftJsonSerializer());
             client.HttpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {auth}");
             return client;
+        }
+
+        public static void SetAuthCode(string newAuth)
+        {
+            auth = newAuth;
         }
     }
 }

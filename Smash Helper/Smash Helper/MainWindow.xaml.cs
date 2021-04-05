@@ -23,11 +23,22 @@ namespace FG_Stream_Helper
     /// </summary>
     public partial class MainWindow : Window
     {
-        List<CharacterImageInfo> CharacterImageList = new List<CharacterImageInfo>();
+        readonly List<CharacterImageInfo> CharacterImageList = new List<CharacterImageInfo>();
 
         public MainWindow()
         {
             InitializeComponent();
+
+            if (!File.Exists("auth.txt"))
+            {
+                File.WriteAllText("auth.txt", $"putTheAuthCodeHere{Environment.NewLine}{Environment.NewLine}https://developer.smash.gg/docs/authentication");
+            }
+
+            //check if out folder exists, create it if it doesn't
+            if (!Directory.Exists("out/"))
+            {
+                Directory.CreateDirectory("out/");
+            }
 
             //check if images folder exists, create it if it doesn't
             if (!Directory.Exists("images/"))
@@ -52,102 +63,58 @@ namespace FG_Stream_Helper
                 i++;
             }
 
-            leftImage.ItemsSource = CharacterImageList;
-            leftImage.SelectedIndex = 0;
-            rightImage.ItemsSource = CharacterImageList;
-            rightImage.SelectedIndex = 0;
+            p1Image.ItemsSource = CharacterImageList;
+            p1Image.SelectedIndex = 0;
+            p2Image.ItemsSource = CharacterImageList;
+            p2Image.SelectedIndex = 0;
         }
 
-        public struct CharacterImageInfo
+        #region Events
+
+        private void p1ScoreUp_Click(object sender, RoutedEventArgs e)
         {
-            public int ID { get; set; }
-            public string Photo { get; set; }
-            public string Name { get; set; }
-            public FileInfo fileInfo { get; set; }
+            UpdateScoreText(p1Score, 1);
         }
 
-        private void leftScoreUp_Click(object sender, RoutedEventArgs e)
+        private void p1ScoreDown_Click(object sender, RoutedEventArgs e)
         {
-            int score = int.Parse(leftScore.Text);
-            score++;
-            leftScore.Text = score.ToString();
+            UpdateScoreText(p1Score, -1);
         }
 
-        private void leftScoreDown_Click(object sender, RoutedEventArgs e)
+        private void p2ScoreUp_Click(object sender, RoutedEventArgs e)
         {
-            int score = int.Parse(leftScore.Text);
-            score--;
-            if (score < 0)
-                score = 0;
-            leftScore.Text = score.ToString();
+            UpdateScoreText(p2Score, 1);
         }
 
-        private void rightScoreUp_Click(object sender, RoutedEventArgs e)
+        private void p2ScoreDown_Click(object sender, RoutedEventArgs e)
         {
-            int score = int.Parse(rightScore.Text);
-            score++;
-            rightScore.Text = score.ToString();
+            UpdateScoreText(p2Score, -1);
         }
 
-        private void rightScoreDown_Click(object sender, RoutedEventArgs e)
-        {
-            int score = int.Parse(rightScore.Text);
-            score--;
-            if (score < 0)
-                score = 0;
-            rightScore.Text = score.ToString();
-        }
 
         private void Submit_Click(object sender, RoutedEventArgs e)
         {
-            //check if out folder exists, create it if it doesn't
-            if (!Directory.Exists("out/"))
-            {
-                Directory.CreateDirectory("out/");
-            }
+            ExportText();
 
-            //left player name
-            File.WriteAllText("out/leftName.txt", leftNameTextBox.Text);
-
-            //right player name
-            File.WriteAllText("out/rightName.txt", rightNameTextBox.Text);
-
-            //left score
-            File.WriteAllText("out/leftScore.txt", leftScore.Text);
-
-            //right score
-            File.WriteAllText("out/rightScore.txt", rightScore.Text);
+            ExportScore();
 
             //only export images if there is something to copy and the option is checked
             if(CharacterImageList.Count != 0  && exportImages.IsChecked.GetValueOrDefault())
             {
-                //left image
-                int itemIndex = leftImage.SelectedIndex;
-                FileInfo fi = CharacterImageList[itemIndex].fileInfo;
-                string path = fi.FullName;
-                //errorsTextBlock.Text = itemIndex.ToString() + " " + path;
-                File.Copy(path, $"out/leftimage{fi.Extension}", true);
-
-                //right image
-                itemIndex = rightImage.SelectedIndex;
-                fi = CharacterImageList[itemIndex].fileInfo;
-                File.Copy(fi.FullName, $"out/rightImage{fi.Extension}", true);
+                ExportImages();
             }
-            
-            //bracket name
-            File.WriteAllText("out/bracketName.txt", bracketTextBox.Text);
         }
 
         private void Reset_Click(object sender, RoutedEventArgs e)
         {
-            leftNameTextBox.Text = "left name";
-            rightNameTextBox.Text = "right name";
+            p1TextBox.Text = "left name";
+            p2TextBox.Text = "right name";
 
-            leftScore.Text = "0";
-            rightScore.Text = "0";
+            p1Score.Text = "0";
+            p2Score.Text = "0";
 
-            leftImage.SelectedIndex = 0;
-            rightImage.SelectedIndex = 0;
+            p1Image.SelectedIndex = 0;
+            p2Image.SelectedIndex = 0;
 
             bracketTextBox.Text = "bracket";
 
@@ -157,19 +124,76 @@ namespace FG_Stream_Helper
 
         private void getMatch_Click(object sender, RoutedEventArgs e)
         {
+            //set the auth for the api.
+            string auth = File.ReadAllLines("auth.txt")[0];
+            ApiHelper.SetAuthCode(auth);
+
             _ = GetAPIInfo(apiText.Text);
         }
 
         private void exportImages_Checked(object sender, RoutedEventArgs e)
         {
-            leftImage.Visibility = Visibility.Visible;
-            rightImage.Visibility = Visibility.Visible;
+            p1Image.Visibility = Visibility.Visible;
+            p2Image.Visibility = Visibility.Visible;
         }
 
         private void exportImages_Unchecked(object sender, RoutedEventArgs e)
         {
-            leftImage.Visibility = Visibility.Collapsed;
-            rightImage.Visibility = Visibility.Collapsed;
+            p1Image.Visibility = Visibility.Collapsed;
+            p2Image.Visibility = Visibility.Collapsed;
+        }
+
+        #endregion
+
+        private void UpdateScoreText(TextBlock text, int amount)
+        {
+            int score = int.Parse(text.Text);
+            score += amount;
+            if (score < 0)
+                score = 0;
+
+            text.Text = score.ToString();
+
+            if (autoUpdateScore.IsChecked.GetValueOrDefault())
+            {
+                ExportScore();
+            }
+        }
+
+        private void ExportScore()
+        {
+            //left score
+            File.WriteAllText("out/p1Score.txt", p1Score.Text);
+
+            //right score
+            File.WriteAllText("out/p2Score.txt", p2Score.Text);
+        }
+
+        private void ExportImages()
+        {
+            //left image
+            int itemIndex = p1Image.SelectedIndex;
+            FileInfo fi = CharacterImageList[itemIndex].fileInfo;
+            string path = fi.FullName;
+            //errorsTextBlock.Text = itemIndex.ToString() + " " + path;
+            File.Copy(path, $"out/p1Image{fi.Extension}", true);
+
+            //right image
+            itemIndex = p2Image.SelectedIndex;
+            fi = CharacterImageList[itemIndex].fileInfo;
+            File.Copy(fi.FullName, $"out/p2Image{fi.Extension}", true);
+        }
+
+        private void ExportText()
+        {
+            //left player name
+            File.WriteAllText("out/p1Name.txt", p1TextBox.Text);
+
+            //right player name
+            File.WriteAllText("out/p2Name.txt", p2TextBox.Text);
+
+            //bracket name
+            File.WriteAllText("out/bracketName.txt", bracketTextBox.Text);
         }
 
         #region API Stuff
@@ -180,7 +204,7 @@ namespace FG_Stream_Helper
 
             string sId = id;
 
-            //check if id starts with h, indicating its a link. if so, only get the id part
+            //check if id starts with h, indicating its a link (starting with http). if so, only get the id part
             if(sId[0] == 'h')
             {
                 string[] split = id.Split('/');
@@ -198,7 +222,7 @@ namespace FG_Stream_Helper
             {
                 SmashGGInfoModel info = await ApiHelper.GetSetInfo(sId);
 
-                SetInfo(info);      
+                //SetInfo(info);
             }
             catch (Exception e)
             {
@@ -206,7 +230,9 @@ namespace FG_Stream_Helper
             }
             finally
             {
+                SmashGGInfoModel info = await ApiHelper.GetSetInfo(sId);
 
+                SetInfo(info);
             }
         }
 
@@ -231,15 +257,15 @@ namespace FG_Stream_Helper
             string p2Name = info.set.slots[1].entrant.name;
 
             //player 1 score
-            float p1Score = info.set.slots[0].standing.stats.score.value;
+            //float p1Score = info.set.slots[0].standing.stats.score.value;
 
             //player 2 score
-            float p2Score = info.set.slots[1].standing.stats.score.value;
+            //float p2Score = info.set.slots[1].standing.stats.score.value;
 
-            leftNameTextBox.Text = p1Name;
-            rightNameTextBox.Text = p2Name;
-            leftScore.Text = p1Score.ToString();
-            rightScore.Text = p2Score.ToString();
+            p1TextBox.Text = p1Name;
+            p2TextBox.Text = p2Name;
+            this.p1Score.Text = "0";
+            this.p2Score.Text = "0";
             bracketTextBox.Text = bracketName;
         }
 
