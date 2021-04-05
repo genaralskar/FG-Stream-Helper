@@ -143,7 +143,7 @@
 
         <!-- 12 Bottom Row -->
         <TextBlock Grid.Row="12" Grid.ColumnSpan="4" Text="Made by @genaralskar" VerticalAlignment="Bottom" HorizontalAlignment="Left" ToolTip="Twitter: @genaralskar, github: genaralskar"/>
-        <TextBlock Grid.Row="12" Grid.ColumnSpan="5" Text="v1.1.1" VerticalAlignment="Bottom" HorizontalAlignment="Right" ToolTip="Twitter: @genaralskar, github: genaralskar"/>
+        <TextBlock Grid.Row="12" Grid.ColumnSpan="5" Text="v1.1.2" VerticalAlignment="Bottom" HorizontalAlignment="Right" ToolTip="Twitter: @genaralskar, github: genaralskar"/>
 
     </Grid>
 </Window>
