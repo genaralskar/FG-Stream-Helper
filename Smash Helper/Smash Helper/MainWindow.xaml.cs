@@ -29,6 +29,17 @@ namespace FG_Stream_Helper
         {
             InitializeComponent();
 
+            if (!File.Exists("auth.txt"))
+            {
+                File.WriteAllText("auth.txt", $"putTheAuthCodeHere{Environment.NewLine}{Environment.NewLine}https://developer.smash.gg/docs/authentication");
+            }
+
+            //check if out folder exists, create it if it doesn't
+            if (!Directory.Exists("out/"))
+            {
+                Directory.CreateDirectory("out/");
+            }
+
             //check if images folder exists, create it if it doesn't
             if (!Directory.Exists("images/"))
             {
@@ -83,12 +94,6 @@ namespace FG_Stream_Helper
 
         private void Submit_Click(object sender, RoutedEventArgs e)
         {
-            //check if out folder exists, create it if it doesn't
-            if (!Directory.Exists("out/"))
-            {
-                Directory.CreateDirectory("out/");
-            }
-
             ExportText();
 
             ExportScore();
@@ -119,6 +124,10 @@ namespace FG_Stream_Helper
 
         private void getMatch_Click(object sender, RoutedEventArgs e)
         {
+            //set the auth for the api.
+            string auth = File.ReadAllLines("auth.txt")[0];
+            ApiHelper.SetAuthCode(auth);
+
             _ = GetAPIInfo(apiText.Text);
         }
 
@@ -195,7 +204,7 @@ namespace FG_Stream_Helper
 
             string sId = id;
 
-            //check if id starts with h, indicating its a link. if so, only get the id part
+            //check if id starts with h, indicating its a link (starting with http). if so, only get the id part
             if(sId[0] == 'h')
             {
                 string[] split = id.Split('/');
@@ -213,7 +222,7 @@ namespace FG_Stream_Helper
             {
                 SmashGGInfoModel info = await ApiHelper.GetSetInfo(sId);
 
-                SetInfo(info);      
+                //SetInfo(info);
             }
             catch (Exception e)
             {
@@ -221,7 +230,9 @@ namespace FG_Stream_Helper
             }
             finally
             {
+                SmashGGInfoModel info = await ApiHelper.GetSetInfo(sId);
 
+                SetInfo(info);
             }
         }
 
@@ -246,15 +257,15 @@ namespace FG_Stream_Helper
             string p2Name = info.set.slots[1].entrant.name;
 
             //player 1 score
-            float p1Score = info.set.slots[0].standing.stats.score.value;
+            //float p1Score = info.set.slots[0].standing.stats.score.value;
 
             //player 2 score
-            float p2Score = info.set.slots[1].standing.stats.score.value;
+            //float p2Score = info.set.slots[1].standing.stats.score.value;
 
             p1TextBox.Text = p1Name;
             p2TextBox.Text = p2Name;
-            this.p1Score.Text = p1Score.ToString();
-            this.p2Score.Text = p2Score.ToString();
+            this.p1Score.Text = "0";
+            this.p2Score.Text = "0";
             bracketTextBox.Text = bracketName;
         }
 
