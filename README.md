@@ -1,5 +1,5 @@
 # FG Stream Helper
-FG Stream Helper is a simple tool that allows you to quickly and easily update player names, scores, icons, and bracket text without having to open up and edit all the settings in your streaming software! Spend less time with the little details and more time playing!
+FG Stream Helper is a simple tool that allows you to quickly and easily update player names, scores, icons, and bracket text without having to open up and edit all the settings in your streaming software! Spend less time with the little details and more time playing!  
 ![smashhelper112](https://user-images.githubusercontent.com/25021050/113529773-9c44b380-9581-11eb-8ec5-86669d67504c.jpg)  
 FG Stream Helper exports this information to individual text files that your streaming software can use for text elements. These files can be found in the "out" folder.
 
